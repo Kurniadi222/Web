@@ -1,0 +1,21 @@
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#0b1620;color:#ecf0f1;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:20px;}
+.hidden{display:none;}
+h2,h3{color:#00ff95;margin:0 0 8px 0;}
+input,select,button{width:100%;padding:8px;margin-top:6px;border-radius:8px;border:0;}
+input,select{background:#0b2634;color:#fff;}
+button{background:#00ff95;color:#081018;font-weight:bold;cursor:pointer;}
+.toggle-btn{width:auto;padding:5px;margin-left:5px;}
+.box{background:#162231;padding:20px;border-radius:12px;width:300px;text-align:center;}
+img#avatarPreview{width:80px;height:80px;border-radius:50%;margin-top:8px;display:none;}
+.navbar{display:flex;justify-content:space-around;background:#162231;padding:10px;border-radius:10px;margin-bottom:20px;flex-wrap:wrap;}
+.navbar button{background:#00ff95;color:#081018;font-weight:bold;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;transition:0.2s;margin:2px;}
+.navbar button:hover{background:#08e07f;}
+.page{display:none;margin-top:12px;width:100%;max-width:600px;}
+.order-item{background:#1b2a3a;padding:10px;margin-top:10px;border-radius:8px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.status{padding:2px 6px;border-radius:6px;font-weight:bold;}
+.status.Tahap{background:#e67e22;color:#fff;}
+.status.Proses{background:#3498db;color:#fff;}
+.status.Done{background:#2ecc71;color:#fff;}
+.order-buttons button{margin-left:5px;padding:3px 6px;font-size:12px;}
+.error{color:#ff6b6b;display:none;margin-top:6px;}
+.input-group{display:flex;align-items:center;gap:5px;}
