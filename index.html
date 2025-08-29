@@ -1,503 +1,364 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
-<meta charset="utf-8"/>
-<title>Voxy Store</title>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxyStore - Order Joki</title>
+  <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://files.catbox.moe/huw2xz.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0b1620;
+      color: #ecf0f1;
     }
-    .navbar {
-      background: rgba(20, 27, 45, 0.9);
-      padding: 10px 20px;
+    header {
+      background: #0f1b29;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #1e2b47;
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    .navbar img {
-      height: 50px;
-      border-radius: 10px;
-    }
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-    }
-    .menu-toggle div {
-      width: 25px;
-      height: 3px;
-      background: white;
-      margin: 4px 0;
-    }
-    nav {
-      display: flex;
-      gap: 20px;
-    }
+    header h1 { color: #00ff95; margin: 0; font-size: 20px; }
     nav a {
-      color: #00ccff;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
+      color: #fff; margin-left: 20px; text-decoration: none; font-size: 14px;
     }
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        background: #141b2d;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        width: 200px;
-        border-radius: 10px;
-        padding: 10px;
-      }
-      nav.active {
-        display: flex;
-      }
-      .menu-toggle {
-        display: flex;
-      }
-    }
-    .welcome-section {
+    nav a:hover { color: #00ff95; }
+    .hero {
       text-align: center;
-      padding: 80px 20px 50px;
-      background: rgba(11, 15, 26, 0.8);
+      padding: 60px 20px;
     }
-    .welcome-section h1 {
-      font-size: 3em;
-      color: #00ccff;
-      margin-bottom: 15px;
-    }
-    .welcome-section p {
-      font-size: 1.2em;
-      color: #c2e0f5;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .product-grid {
-      display: none;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 30px;
-    }
-    .product-grid.active {
-      display: grid;
-    }
-    .product {
-      background: rgba(20, 27, 45, 0.95);
-      border: 2px solid #2a395e;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      transition: transform 0.2s ease;
-      box-shadow: 0 0 15px rgba(0, 140, 255, 0.25);
-    }
-    .product:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 20px rgba(0, 204, 255, 0.4);
-    }
-    .product-name {
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #00ccff;
-      margin-bottom: 10px;
-    }
-    .product-description {
-      font-size: 1em;
-      color: #c2e0f5;
-      margin-bottom: 15px;
-    }
-    .product-price {
-      font-size: 1.2em;
-      color: #33ffff;
-      margin-bottom: 15px;
-    }
-    .product button {
-      background-color: #00ccff;
-      color: #000;
-      border: none;
+    .hero h2 { color: #00ff95; font-size: 28px; margin-bottom: 10px; }
+    .hero p { font-size: 15px; opacity: 0.9; }
+    .btn {
       padding: 12px 20px;
-      font-size: 1em;
-      border-radius: 6px;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: none;
       cursor: pointer;
       font-weight: bold;
-      transition: 0.2s;
+      transition: 0.3s;
+      background: #00ff95;
+      color: #0a0f18;
     }
-    .product button:hover {
-      background-color: #0099cc;
-      color: white;
+    .btn:hover { opacity: 0.8; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      color: #aaa;
+      margin-top: 40px;
     }
+    /* Modal */
     .modal {
       display: none;
-      position: fixed;
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center; align-items: center;
       z-index: 2000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
     }
     .modal-content {
-      background: #141b2d;
-      padding: 25px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(0, 204, 255, 0.4);
+      background: #162231;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%; max-width: 400px;
     }
-    .modal-content h3 {
-      margin-top: 0;
-      color: #00ccff;
+    .modal-content h3 { color: #00ff95; margin-bottom: 15px; }
+    .modal-content label { display: block; margin: 10px 0 5px; }
+    .modal-content input, .modal-content textarea {
+      width: 100%; padding: 8px; border-radius: 6px; border: none; margin-bottom: 10px;
     }
-    .close-btn {
-      margin-top: 20px;
-      background: #ff4444;
-      color: white;
-      padding: 10px 20px;
+    .modal-content button {
+      margin-top: 10px;
+      padding: 10px;
       border: none;
       border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
     }
-    a {
-      color: #00ccff;
-      text-decoration: none;
+    .btn-close { background: #e74c3c; color: #fff; margin-right: 5px; }
+    .btn-submit { background: #00ff95; color: #0a0f18; }
+    /* Pembayaran UI */
+    .pay-options {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
+    .pay-options input[type="radio"] { display: none; }
+    .pay-options label {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #1b2a3a;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: 0.3s;
+    }
+    .pay-options input[type="radio"]:checked + label {
+      background: #00ff95;
+      color: #0a0f18;
+      font-weight: bold;
+      border-color: #00ff95;
+    }
+    /* Daftar Order */
+    .orders {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #0f1b29;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .orders h2 { color: #00ff95; margin-bottom: 15px; text-align: center; }
+    .order-item {
+      background: #1b2a3a;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .order-item img {
+      max-height: 80px;
+      margin-top: 6px;
+      border-radius: 6px;
+    }
+    .order-item button {
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #00ff95;
+      color: #0a0f18;
+    }
+    .status {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .status.Tahap\ Pembayaran { background: #e67e22; color: #fff; }
+    .status.Proses\ Joki { background: #3498db; color: #fff; }
+    .status.Done { background: #2ecc71; color: #fff; }
+    /* Login Page */
+    #loginPage {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      background:#0b1620;
+    }
+    #loginBox {
+      background:#162231;
+      padding:20px;
+      border-radius:10px;
+      width:300px;
+      text-align:center;
+    }
+    #loginBox h2 { color:#00ff95; }
+    #loginBox input {
+      width:100%; padding:8px; margin:10px 0; border-radius:6px; border:none;
+    }
+    #loginBox button {
+      padding:10px 20px;
+      background:#00ff95;
+      border:none;
+      border-radius:6px;
+      font-weight:bold;
+      cursor:pointer;
+    }
+    #loginError { color:red; display:none; font-size:13px; }
   </style>
-<style>
-  .product-card {
-    background: rgba(0, 0, 0, 0.75);
-    border: 2px solid #00ffff;
-    border-radius: 16px;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 400px;
-    box-shadow: 0 0 15px #00ffff66;
-    color: white;
-    text-align: center;
-    transition: transform 0.2s;
-  }
-
-  .product-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px #00ffff99;
-  }
-
-  .highlight {
-    color: #00ffff;
-  }
-
-  .description {
-    font-size: 16px;
-    color: #ccc;
-    margin-bottom: 10px;
-  }
-
-  .price {
-    font-size: 20px;
-    color: #00ffff;
-    margin-bottom: 15px;
-  }
-
-  .buy-button {
-    background-color: #00ffff;
-    color: #000;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .buy-button:hover {
-    background-color: #00cccc;
-  }
-
-  .video-container {
-    margin-top: 15px;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 0 10px #00ffff33;
-  }
-</style>
 </head>
 <body>
-<div class="navbar">
-<img alt="Voxy Logo" src="https://files.catbox.moe/dlohyl.jpg"/>
-<div class="menu-toggle" onclick="toggleMenu()">
-<div></div><div></div><div></div>
-</div>
-<nav id="nav">
-<a onclick="showCategory('homepage')">HOMEPAGE</a>
-<a onclick="showCategory('server')">SERVER</a>
-<a onclick="showCategory('rpg')">RPG CLASS</a>
-<a onclick="showCategory('testimoni')">TESTIMONI</a>
-<a onclick="showCategory('support')">SUPPORT</a>
-<a onclick="showCategory('infoserver')">INFO SERVER</a>
-</nav>
-</div>
-<!-- PRODUCT GRID SERVER -->
-<div class="product-grid" id="server">
-<div class="product">
-<div class="product-name">Paket 1</div>
-<div class="product-description">RAM 1GB | Disk 5GB | CPU 100%</div>
-<div class="product-price">Rp 5.000</div>
-<button onclick="openModal('Paket 1')">Buy Now</button>
-<button onclick="showDetails('paket1')">Details</button>
-</div>
-<div class="product">
-<div class="product-name">Paket 2</div>
-<div class="product-description">RAM 2GB | Disk 10GB | CPU 200%</div>
-<div class="product-price">Rp 10.000</div>
-<button onclick="openModal('Paket 2')">Buy Now</button>
-<button onclick="showDetails('paket2')">Details</button>
-</div>
-<div class="product">
-<div class="product-name">Paket 3</div>
-<div class="product-description">RAM 3GB | Disk 15GB | CPU 300%</div>
-<div class="product-price">Rp 15.000</div>
-<button onclick="openModal('Paket 3')">Buy Now</button>
-<button onclick="showDetails('paket3')">Details</button>
-</div>
-<div class="product">
-<div class="product-name">Paket 4</div>
-<div class="product-description">RAM 4GB | Disk 20GB | CPU 400%</div>
-<div class="product-price">Rp 20.000</div>
-<button onclick="openModal('Paket 4')">Buy Now</button>
-<button onclick="showDetails('paket4')">Details</button>
-</div>
-<div class="product">
-<div class="product-name">Paket 5</div>
-<div class="product-description">RAM 5GB | Disk 25GB | CPU 500%</div>
-<div class="product-price">Rp 25.000</div>
-<button onclick="openModal('Paket 5')">Buy Now</button>
-<button onclick="showDetails('paket5')">Details</button>
-</div>
-</div>
-<!-- Modal Detail Produk -->
-<div class="modal" id="detailsModal">
-<div class="modal-content">
-<h3 id="detailsTitle">Detail Produk</h3>
-<p id="detailsContent">Isi detail akan tampil di sini.</p>
-<button class="close-btn" onclick="closeDetails()">Tutup</button>
-</div>
-</div>
-<script>
-function openModal(productName) {
-  document.getElementById("buyProduct").innerText = "Pembayaran untuk: " + productName;
-  document.getElementById("buyModal").style.display = "flex";
-}
 
-function closeModal() {
-  document.getElementById("buyModal").style.display = "none";
-}
-
-function showDetails(paket) {
-  const detailsData = {
-    paket1: `Paket 1:
-    \n- RAM: 1GB\n- Disk: 5GB\n- CPU: 100%\n- Lokasi: Singapura\n- Fitur: All Software, Anti DDoS L4, Auto Backup`,
-    paket2: `Paket 2:
-    \n- RAM: 2GB\n- Disk: 10GB\n- CPU: 200%\n- Lokasi: Singapura\n- Fitur: All Software, Anti DDoS L4, Auto Backup`,
-    paket3: `Paket 3:
-    \n- RAM: 3GB\n- Disk: 15GB\n- CPU: 300%\n- Lokasi: Singapura\n- Fitur: All Software, Anti DDoS L4, Auto Backup`,
-    paket4: `Paket 4:
-    \n- RAM: 4GB\n- Disk: 20GB\n- CPU: 400%\n- Lokasi: Singapura\n- Fitur: All Software, Anti DDoS L4, Auto Backup`,
-    paket5: `Paket 5:
-    \n- RAM: 5GB\n- Disk: 25GB\n- CPU: 500%\n- Lokasi: Singapura\n- Fitur: All Software, Anti DDoS L4, Auto Backup`
-  };
-
-  document.getElementById("detailsTitle").innerText = "Detail " + paket.toUpperCase();
-  document.getElementById("detailsContent").innerText = detailsData[paket] || "Detail tidak tersedia.";
-  document.getElementById("detailsModal").style.display = "flex";
-}
-
-function closeDetails() {
-  document.getElementById("detailsModal").style.display = "none";
-}
-</script>
-<!-- RPG CLASS -->
-<div class="product-grid" id="rpg">
-<div class="product-card">
-<div class="product-header">
-<h2>[Voxy RPG] <span class="highlight">Void Edge</span></h2>
-<p class="description">6 Skill | 1 Pasif</p>
-<p class="price">Rp 100.000</p>
-<button class="buy-button" onclick="openModal('Void Edge')">Buy Now</button>
-</div>
-<div class="video-container">
-<iframe allowfullscreen="" frameborder="0" height="200" src="https://www.youtube.com/embed/z4BC7CAE0KM" title="Void Edge" width="100%"></iframe>
-</div>
-</div>
-<div class="product-card">
-<div class="product-header">
-<h2>[Voxy RPG] <span class="highlight">Phoenix Hunter</span></h2>
-<p class="description">6 Skill | 1 Pasif</p>
-<p class="price">Rp 120.000</p>
-<button class="buy-button" onclick="openModal('Phoenix Hunter')">Buy Now</button>
-</div>
-<div class="video-container">
-<iframe allowfullscreen="" frameborder="0" height="200" src="https://www.youtube.com/embed/Z-E70qYZ97s" title="Phoenix Hunter" width="100%"></iframe>
-</div>
-</div>
-<div class="product-card">
-<div class="product-header">
-<h2>[Voxy RPG] <span class="highlight">Gale Glaive</span></h2>
-<p class="description">6 Skill | 1 Pasif</p>
-<p class="price">Rp 120.000</p>
-<button class="buy-button" onclick="openModal('Unknown Class 1')">Buy Now</button>
-</div>
-<div class="video-container">
-<iframe allowfullscreen="" frameborder="0" height="200" src="https://www.youtube.com/embed/WeleQkNo6ok" title="Unknown Class 1" width="100%"></iframe>
-</div>
-</div>
-<div class="product-card">
-<div class="product-header">
-<h2>[Voxy RPG] <span class="highlight">Death Knight</span></h2>
-<p class="description">6 Skill | 1 Pasif</p>
-<p class="price">Rp 120.000</p>
-<button class="buy-button" onclick="openModal('Unknown Class 2')">Buy Now</button>
-</div>
-<div class="video-container">
-<iframe allowfullscreen="" frameborder="0" height="200" src="https://www.youtube.com/embed/4cagZwdjvdU" title="Unknown Class 2" width="100%"></iframe>
-</div>
-</div>
-</div>
-<!-- TESTIMONI --><!-- TESTIMONI --><div class="product-grid" id="testimoni">
-  <div class="product">
-    <div class="product-name">Testimoni #1</div>
-    <div class="product-description">
-      <img src="https://files.catbox.moe/80i7g6.jpg" alt="Testimoni #1" style="width:100%; max-width:400px; border-radius: 10px; margin-bottom: 10px;"/>
-      <p style="color: #c2e0f5;">
-        - PRODUCT: SERVER
-        - PEMBAYARAN: DANA
-        - TANGGAL: 6/11/2024
-        - STATUS: DONE
-      </p>
+  <!-- Halaman Login -->
+  <div id="loginPage">
+    <div id="loginBox">
+      <h2>Login Admin</h2>
+      <input type="text" id="loginUser" placeholder="Username">
+      <input type="password" id="loginPass" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p id="loginError">Username / Password salah!</p>
     </div>
-    <div class="product-price">Terima kasih atas kepercayaannya!</div>
   </div>
-</div>
 
-<!-- SUPPORT -->
-<div class="product-grid" id="support">
-<div class="product">
-<div class="product-name">Bantuan &amp; Kontak</div>
-<div class="product-description">
-      Jika ada kendala silakan hubungi:<br/><br/>
-<strong>Email:</strong> <a href="mailto:kurniadiilham66@gmail.com">kurniadiilham66@gmail.com</a><br/>
-<strong>WhatsApp:</strong> <a href="https://wa.me/6283875503132" target="_blank">0838-7550-3132</a>
-</div>
-<div class="product-price">Kami Siap Membantu</div>
-</div>
-<div class="product">
-<div class="product-name">Saweria</div>
-<div class="product-description">Dukung kami di Saweria</div>
-<a href="https://saweria.co/Voxyyyyyyy" target="_blank">
-<button>Kunjungi</button>
-</a>
-</div>
-<div class="product">
-<div class="product-name">Discord Store</div>
-<div class="product-description">Gabung ke Discord Store Voxy</div>
-<a href='https://bit.ly/AETHERIA"#"' target="_blank">
-<button>Gabung Discord</button>
-</a>
-</div>
-<div class="product">
-<div class="product-name">Grup WhatsApp</div>
-<div class="product-description">Gabung ke grup WhatsApp Store Voxy</div>
-<a href="#" target="_blank">
-<button>Gabung WA</button>
-</a>
-</div>
-</div>
-<!-- INFO SERVER -->
-<div class="product-grid" id="infoserver">
-<div class="product">
-<div class="product-name">Informasi Server</div>
-<div class="product-description">
-<strong>Nama Server:</strong> Luminous Rp<br/>
-<strong>IP:</strong> <span id="ip">luminousfantasy.quenssshost.my.id:25565</span><br/>
-<strong>MOTD:</strong> <span id="motd">Mengambil data...</span><br/>
-<strong>Player Online:</strong> <span id="players">Mengambil...</span>
-</div>
-<div class="product-price">Live Status</div>
-</div>
-</div>
-<body style="margin:0; padding:0;">
-<!-- Homepage -->
-<div class="product-grid active" id="homepage" style="text-align: center; padding: 60px 20px; background: rgba(0, 0, 0, 0.6); border-radius: 20px; margin: 40px auto; max-width: 800px; box-shadow: 0 0 20px rgba(255, 255, 255, 0.1); z-index: 2; position: relative;">
-<h1 style="font-size: 48px; color: #fff; margin-bottom: 20px; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
-      Selamat Datang di <span style="color: #00ffff;">Voxy Store</span>
-</h1>
-<p style="font-size: 20px; color: #ddd; line-height: 1.6;">
-      Kami menyediakan layanan <strong>server berkualitas</strong> dan <strong>class RPG eksklusif</strong> buatan kami sendiri.<br/>
-      Gabung sekarang dan nikmati pengalaman bermain yang berbeda!
-    </p>
-</div>
-<!-- Menu / Produk / Konten lainnya -->
-</body>
-<!-- Modal dengan QRIS -->
-<div class="modal" id="buyModal">
-<div class="modal-content">
-<h3>Konfirmasi Pembelian</h3>
-<p id="buyProduct">Produk</p>
-<img alt="QRIS Pembayaran" src="https://files.catbox.moe/dlohyl.jpg" style="width: 100%; margin: 15px 0; border-radius: 8px; box-shadow: 0 0 10px #00ccff;"/>
-<p style="color:#c2e0f5; font-size: 0.9em;">083875503132 - Gopay/Ovo/Dana/QRIS</p>
-<p style="color:#c2e0f5; font-size: 0.9em;">Setelah Membayar Kirim bukti transfer ke Admin ya Terima kasih</p>
-<button class="close-btn" onclick="closeModal()">Tutup</button>
+  <!-- Halaman Utama -->
+  <div id="mainPage" style="display:none;">
+    <header>
+      <h1>VoxyStore</h1>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#orders">Daftar Order</a>
+      </nav>
+    </header>
 
-<a href="https://wa.me/6283875503132" target="_blank">
-<button class="buy-button" style="margin-top: 10px;">Chat Admin</button>
-</a>
-</div>
-</div>
-<script>
-function toggleMenu() {
-  const nav = document.getElementById('nav');
-  nav.classList.toggle('active');
-}
+    <section class="hero" id="home">
+      <h2>SELAMAT DATANG DI VOXYSTORE</h2>
+      <p>Tempat top up Roblox, Gamepass, dan jasa joki terpercaya 🔥</p>
+      <button class="btn" onclick="openModal()">Order Joki</button>
+    </section>
 
-function showCategory(categoryId) {
-  const categories = ['homepage', 'server', 'rpg', 'testimoni', 'support', 'infoserver'];
-  categories.forEach(id => {
-    document.getElementById(id).classList.remove('active');
-  });
-  document.getElementById(categoryId).classList.add('active');
-}
+    <!-- Modal Form Order -->
+    <div class="modal" id="orderModal">
+      <div class="modal-content">
+        <h3>Form Order Joki</h3>
+        <label>Username Roblox</label>
+        <input type="text" id="username" required>
+        <label>Password (opsional)</label>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <input type="password" id="password" style="flex:1;">
+          <button type="button" onclick="togglePassword()" style="padding:6px 10px; border:none; border-radius:6px; background:#00ff95; color:#0a0f18; font-weight:bold; cursor:pointer;">👁</button>
+        </div>
+        <label>Kebutuhan Joki</label>
+        <textarea id="kebutuhan" placeholder="Contoh: Naik level 100 ke 500"></textarea>
+        <label>Metode Pembayaran</label>
+        <div class="pay-options">
+          <input type="radio" id="pay-dana" name="pembayaran" value="Dana" checked>
+          <label for="pay-dana">Dana</label>
+          <input type="radio" id="pay-ovo" name="pembayaran" value="Ovo">
+          <label for="pay-ovo">Ovo</label>
+          <input type="radio" id="pay-gopay" name="pembayaran" value="Gopay">
+          <label for="pay-gopay">Gopay</label>
+          <input type="radio" id="pay-qris" name="pembayaran" value="Qris">
+          <label for="pay-qris">Qris</label>
+        </div>
+        <label>Upload Bukti Transfer</label>
+        <input type="file" id="bukti" accept="image/*">
+        <div style="text-align:right;">
+          <button class="btn-close" onclick="closeModal()">Batal</button>
+          <button class="btn-submit" onclick="submitOrder()">Kirim</button>
+        </div>
+      </div>
+    </div>
 
-// Auto tampilkan SERVER saat halaman dibuka
-document.addEventListener('DOMContentLoaded', () => {
-  showCategory('homepage');
-  fetchServerStatus();
-});
+    <!-- Daftar Order -->
+    <section class="orders" id="orders">
+      <h2>Daftar Order Joki</h2>
+      <div id="orderList"></div>
+    </section>
 
-// Ambil data server MOTD & player
-function fetchServerStatus() {
-  fetch('https://api.mcstatus.io/v2/status/java/luminousfantasy.quenssshost.my.id')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('motd').textContent = data.motd.clean || 'Tidak tersedia';
-      document.getElementById('players').textContent = `${data.players.online} / ${data.players.max}`;
-    })
-    .catch(error => {
-      document.getElementById('motd').textContent = 'SERVER OFF';
-      document.getElementById('players').textContent = 'SERVER OFF';
-    });
-}
-</script>
+    <footer>© 2025 VoxyStore - All Rights Reserved</footer>
+  </div>
+
+  <script>
+    // LOGIN
+    function login() {
+      let user = document.getElementById("loginUser").value;
+      let pass = document.getElementById("loginPass").value;
+
+      let adminUser = "admin";
+      let adminPass = "12345";
+
+      if (user === adminUser && pass === adminPass) {
+        localStorage.setItem("isLogin","true");
+        document.getElementById("loginPage").style.display="none";
+        document.getElementById("mainPage").style.display="block";
+      } else {
+        document.getElementById("loginError").style.display="block";
+      }
+    }
+
+    // CEK LOGIN
+    window.onload = function() {
+      if(localStorage.getItem("isLogin")==="true"){
+        document.getElementById("loginPage").style.display="none";
+        document.getElementById("mainPage").style.display="block";
+      }
+      renderOrders();
+    }
+
+    // MODAL
+    function openModal() {
+      document.getElementById("orderModal").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("orderModal").style.display = "none";
+    }
+    function togglePassword() {
+      let pass = document.getElementById("password");
+      pass.type = pass.type === "password" ? "text" : "password";
+    }
+
+    // DATA ORDER
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    function renderOrders() {
+      let orderList = document.getElementById("orderList");
+      if(!orderList) return;
+      orderList.innerHTML = "";
+      orders.forEach((o,i) => {
+        let div = document.createElement("div");
+        div.className = "order-item";
+        div.innerHTML = `
+          <b>${o.username}</b> - ${o.kebutuhan}<br>
+          Pembayaran: ${o.pembayaran}<br>
+          <small>${o.tanggal}</small><br>
+          Status: <span class="status ${o.status}">${o.status}</span><br>
+          ${o.bukti ? `<img src="${o.bukti}" alt="Bukti Transfer">` : ""}
+          <br>
+          <button onclick="prosesWA(${i})">WhatsApp</button>
+          <button onclick="ubahStatus(${i}, 'Tahap Pembayaran')">Pembayaran</button>
+          <button onclick="ubahStatus(${i}, 'Proses Joki')">Proses</button>
+          <button onclick="ubahStatus(${i}, 'Done')">Done</button>
+        `;
+        orderList.appendChild(div);
+      });
+    }
+
+    function submitOrder() {
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+      let kebutuhan = document.getElementById("kebutuhan").value;
+      let pembayaran = document.querySelector('input[name="pembayaran"]:checked').value;
+      let fileInput = document.getElementById("bukti");
+
+      if(username.trim()=="" || kebutuhan.trim()=="" || fileInput.files.length === 0) {
+        alert("Lengkapi data terlebih dahulu!");
+        return;
+      }
+
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        let waktu = new Date();
+        let tanggal = waktu.toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}) + 
+                      " • " + waktu.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"});
+        let data = {username,password,kebutuhan,pembayaran,bukti:e.target.result,tanggal,status:"Tahap Pembayaran"};
+        orders.unshift(data);
+        localStorage.setItem("orders", JSON.stringify(orders));
+        renderOrders();
+        closeModal();
+        document.getElementById("username").value="";
+        document.getElementById("password").value="";
+        document.getElementById("kebutuhan").value="";
+        fileInput.value="";
+      }
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+
+    function ubahStatus(index, status) {
+      orders[index].status = status;
+      localStorage.setItem("orders", JSON.stringify(orders));
+      renderOrders();
+    }
+
+    function prosesWA(index) {
+      let o = orders[index];
+      let teks = `*Format Order Joki VoxyStore*\n\n` +
+                 `👤 Username: ${o.username}\n` +
+                 (o.password ? `🔑 Password: ${o.password}\n` : ``) +
+                 `📌 Kebutuhan: ${o.kebutuhan}\n` +
+                 `💳 Pembayaran: ${o.pembayaran}\n` +
+                 `⏰ Tanggal: ${o.tanggal}\n` +
+                 `📷 Bukti Transfer: (lihat di daftar order)\n` +
+                 `📍 Status: ${o.status}`;
+      let url = "https://wa.me/6283875503132?text=" + encodeURIComponent(teks);
+      window.open(url, "_blank");
+    }
+  </script>
 </body>
 </html>
